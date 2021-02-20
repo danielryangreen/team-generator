@@ -1,2 +1,2 @@
 # team-generator
-Command-line application that generates a webpage based on user input
+Command-line application that generates a team webpage based on user input

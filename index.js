@@ -5,6 +5,7 @@ const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 
 const teamMembers = [];
+let nextEmployee = "";
 
 function createManager() {
   console.log("Please build your team");
@@ -22,7 +23,7 @@ function createManager() {
     },
     {
       type: "input",
-      name: "managerID",
+      name: "managerId",
       message: "What is the team manager's ID?",
     },
     {
@@ -41,6 +42,13 @@ function createManager() {
       message: "Which type of employee would you like to add next?",
       choices: ["Engineer", "Intern", "I am done adding team members."],
     },
-  ]);
+  ])
+  .then((answers) => {
+    const manager = new Manager(answers.managerName, answers.managerId, answers.managerEmail, answers.managerOfficeNumber);
+    teamMembers.push(manager);
+    console.log(teamMembers);
+    nextEmployee = answers.nextEmployee;
+    console.log(nextEmployee);
+  });
 }
 createManager();

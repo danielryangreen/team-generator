@@ -5,7 +5,6 @@ const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 
 const teamMembers = [];
-let nextEmployee = "Manager";
 
 function createManager() {
   console.log("Please build your team");
@@ -36,6 +35,16 @@ function createManager() {
       name: "managerOfficeNumber",
       message: "What is the team manager's office number?",
     },
+  ])
+  .then((answers) => {
+    const manager = new Manager(answers.managerName, answers.managerId, answers.managerEmail, answers.managerOfficeNumber);
+    teamMembers.push(manager);
+    createTeamMember();
+  });
+}
+
+function createTeamMember() {
+  inquirer.prompt([
     {
       type: "list",
       name: "nextEmployee",
@@ -44,11 +53,17 @@ function createManager() {
     },
   ])
   .then((answers) => {
-    const manager = new Manager(answers.managerName, answers.managerId, answers.managerEmail, answers.managerOfficeNumber);
-    teamMembers.push(manager);
-    console.log(teamMembers);
-    nextEmployee = answers.nextEmployee;
-    console.log(nextEmployee);
+    switch (answers.nextEmployee) {
+      case "Engineer":
+        createEngineer();
+        break;
+      case "Intern":
+        createIntern();
+        break;
+      default:
+        console.log(teamMembers);
+        break;
+    }
   });
 }
 
@@ -80,19 +95,11 @@ function createEngineer() {
       name: "engineerGithub",
       message: "What is the engineer's GitHub username?",
     },
-    {
-      type: "list",
-      name: "nextEmployee",
-      message: "Which type of employee would you like to add next?",
-      choices: ["Engineer", "Intern", "I am done adding team members."],
-    },
   ])
   .then((answers) => {
     const engineer = new Engineer(answers.engineerName, answers.engineerId, answers.engineerEmail, answers.engineerGithub);
     teamMembers.push(engineer);
-    console.log(teamMembers);
-    nextEmployee = answers.nextEmployee;
-    console.log(nextEmployee);
+    createTeamMember();
   });
 }
 
@@ -124,30 +131,12 @@ function createIntern() {
       name: "internSchool",
       message: "What is the intern's school?",
     },
-    {
-      type: "list",
-      name: "nextEmployee",
-      message: "Which type of employee would you like to add next?",
-      choices: ["Engineer", "Intern", "I am done adding team members."],
-    },
   ])
   .then((answers) => {
     const intern = new Intern(answers.internName, answers.internId, answers.internEmail, answers.internSchool);
     teamMembers.push(intern);
-    console.log(teamMembers);
-    nextEmployee = answers.nextEmployee;
-    console.log(nextEmployee);
+    createTeamMember();
   });
 }
 
-// while (nextEmployee !== "I am done adding team members.") {
-//   if (nextEmployee === "Manager") {
-//     createManager();
-//   }
-//   else if (nextEmployee === "Engineer") {
-//     createEngineer();
-//   }
-//   else if (nextEmployee === "Intern") {
-//     createIntern();
-//   }
-// }
+createManager();

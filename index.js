@@ -1,4 +1,7 @@
 const inquirer = require("inquirer");
+const fs = require("fs");
+
+const template = require("./src/template.js");
 
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
@@ -62,6 +65,10 @@ function createTeamMember() {
         break;
       default:
         console.log(teamMembers);
+        fs.writeFile("./dist/team.html", template.generateHtml(teamMembers),
+        (err) =>
+          err ? console.log(err) : console.log("Success!")
+        );
         break;
     }
   });
